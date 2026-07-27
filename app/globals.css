@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* ============================================================================
+ * Spurs Gift Cards — design tokens.
+ * Violet is the shared Spurs brand. Amber is the gift-card accent: it reads as
+ * value and celebration without pretending to be cash, which matters here —
+ * credit is spendable inside Spurs, but it is not money you can withdraw.
+ * ==========================================================================*/
+@theme inline {
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-cash: var(--cash);
+  --color-cash-soft: var(--cash-soft);
+
+  --radius-card: 18px;
+}
+
+:root {
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --line: #eaecf4;
+  --ink: #12131f;
+  --muted: #676b80;
+  --faint: #9aa0b4;
+  --brand: #6d4aff;
+  --brand-soft: #f0ecff;
+  --gold: #b4790a;
+  --gold-soft: #fdf3e0;
+  --cash: #0ea36b;
+  --cash-soft: #e6f7f0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0e17;
+    --card: #16182a;
+    --line: #242741;
+    --ink: #edeef7;
+    --muted: #a0a4bb;
+    --faint: #767b93;
+    --brand: #a78bfa;
+    --brand-soft: rgba(167, 139, 250, .14);
+    --gold: #f0b429;
+    --gold-soft: rgba(240, 180, 41, .14);
+    --cash: #34d399;
+    --cash-soft: rgba(52, 211, 153, .13);
+  }
+}
+
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ------------------------------ primitives ------------------------------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+}
+.card-hover { transition: border-color .15s, transform .15s, box-shadow .15s; }
+.card-hover:hover {
+  border-color: color-mix(in srgb, var(--brand) 40%, transparent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / .06);
+}
+
+.btn-brand {
+  background: var(--brand);
+  color: #fff;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: filter .15s, opacity .15s;
+  display: inline-flex; align-items: center; gap: .5rem;
+}
+.btn-brand:hover { filter: brightness(1.08); }
+.btn-brand:disabled { opacity: .5; cursor: not-allowed; filter: none; }
+
+.btn-ghost {
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: border-color .15s;
+  display: inline-flex; align-items: center; gap: .5rem;
+}
+.btn-ghost:hover { border-color: color-mix(in srgb, var(--brand) 50%, transparent); }
+.btn-ghost:disabled { opacity: .5; cursor: not-allowed; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: .375rem;
+  border-radius: 9999px; padding: .25rem .625rem;
+  font-size: .75rem; font-weight: 600;
+  background: color-mix(in srgb, var(--muted) 10%, transparent);
+  color: var(--muted);
+}
+.chip-brand { background: var(--brand-soft); color: var(--brand); }
+.chip-gold  { background: var(--gold-soft);  color: var(--gold); }
+.chip-cash  { background: var(--cash-soft);  color: var(--cash); }
+
+.field {
+  width: 100%;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: .625rem .875rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s;
+}
+.field:focus { border-color: var(--brand); }
+.field::placeholder { color: var(--faint); }
+
+/* A selectable option block — payout choice, denominations, brands. */
+.opt {
+  width: 100%;
+  display: flex; align-items: center; gap: .75rem;
+  text-align: left;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: .875rem 1rem;
+  transition: border-color .15s, background .15s;
+}
+.opt:hover { border-color: color-mix(in srgb, var(--brand) 50%, transparent); }
+.opt-on { border-color: var(--brand); background: var(--brand-soft); }
+
+.divide-line > * + * { border-color: var(--line); }
+.border-line { border-color: var(--line); }
+.bg-line { background: var(--line); }
+
+/* The card face itself — the one place this app gets to look like a gift. */
+.giftface {
+  background: linear-gradient(135deg, #6d4aff 0%, #8b6bff 45%, #f0b429 140%);
+  color: #fff;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.giftface::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 85% 15%, rgb(255 255 255 / .22), transparent 55%);
+  pointer-events: none;
+}
+
+/* Monospace for codes — they get read aloud and typed by hand. */
+.code {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: .08em;
+}
