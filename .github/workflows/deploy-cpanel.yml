@@ -26,7 +26,11 @@ jobs:
           fi
           cp -R .next/static .next/standalone/.next/static
           cp .env.production .next/standalone/.env.production
-          cp package.json .next/standalone/package.json
+          # Ship a DEPENDENCY-FREE package.json. The standalone server requires its
+          # bundled files directly, so it needs no deps at runtime — and stripping
+          # them means an accidental cPanel "Run NPM Install" is a harmless no-op
+          # instead of failing to git-clone the private @spurs-cloud SDK.
+          node -e "const p=require('./package.json');require('fs').writeFileSync('.next/standalone/package.json',JSON.stringify({name:p.name,version:p.version,private:true,scripts:{start:'node server.js'}},null,2))"
 
       # Passenger restarts when it sees an updated tmp/restart.txt
       - name: Add restart trigger
