@@ -44,3 +44,6 @@ jobs:
           local-dir: ./.next/standalone/
           server-dir: /
           protocol: ftps
+          exclude: |
+            **/.git*
+            **/.git*/**
