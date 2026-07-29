@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
-    "@spurs-cloud/accounts": "github:Delma60/spurs-account-js-sdk",
+    "@spurs-cloud/accounts": "git+https://github.com/Delma60/spurs-account-js-sdk.git",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.2",
     "jose": "^6.2.3",
