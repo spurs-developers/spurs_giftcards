@@ -45,5 +45,6 @@ jobs:
           server-dir: /
           protocol: ftps
           exclude: |
-            **/.git*
-            **/.git*/**
+            **/.git/**
+            **/node_modules/**
+            **/.next/cache/**
