@@ -48,12 +48,17 @@ jobs:
           local-dir: ./.next/standalone/
           server-dir: /
           protocol: ftps
-          # DO NOT exclude node_modules here: `output: standalone` ships a minimal,
+          # ONE-TIME: forces a clean full upload and resets the FTP sync-state.
+          # The prior deploys (which excluded node_modules) left a stale state that
+          # made the incremental sync 550 when node_modules newly appeared. After the
+          # first successful run, set this back to false so deploys are incremental
+          # again. It wipes only the deploy target dir (app artifacts, all re-uploaded).
+          dangerous-clean-slate: true
+          # DO NOT exclude node_modules: `output: standalone` ships a minimal,
           # self-contained node_modules (next, react, sharp…) inside .next/standalone.
           # Excluding it left the server without Next.js → 503, and forced a manual
-          # `npm install` on cPanel that then failed cloning the private SDK over SSH.
-          # The SDK itself is already bundled into the server chunks, so nothing needs
-          # installing on the server.
+          # `npm install` on cPanel that then failed cloning the SDK over SSH.
+          # The SDK is bundled into the server chunks, so nothing installs on the server.
           exclude: |
             **/.git/**
             **/.next/cache/**
