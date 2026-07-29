@@ -44,7 +44,12 @@ jobs:
           local-dir: ./.next/standalone/
           server-dir: /
           protocol: ftps
+          # DO NOT exclude node_modules here: `output: standalone` ships a minimal,
+          # self-contained node_modules (next, react, sharp…) inside .next/standalone.
+          # Excluding it left the server without Next.js → 503, and forced a manual
+          # `npm install` on cPanel that then failed cloning the private SDK over SSH.
+          # The SDK itself is already bundled into the server chunks, so nothing needs
+          # installing on the server.
           exclude: |
             **/.git/**
-            **/node_modules/**
             **/.next/cache/**
