@@ -1,3 +1,4 @@
+
 import "server-only";
 import { and, eq, lte, sql } from "drizzle-orm";
 import { db, jobs, type Job } from "@/lib/db";
@@ -32,7 +33,7 @@ export async function enqueue(
 
 /** Claim up to `limit` due jobs. SKIP LOCKED keeps concurrent runners apart. */
 async function claim(limit: number): Promise<Job[]> {
-  const rows = await db.execute<Job>(sql`
+  const result = await db.execute<Job>(sql`
     update giftcards.jobs
     set status = 'running', attempts = attempts + 1
     where id in (
@@ -44,7 +45,9 @@ async function claim(limit: number): Promise<Job[]> {
     )
     returning *
   `);
-  return Array.from(rows) as Job[];
+  // neon-http returns a NeonHttpQueryResult ({ rows, rowCount, … }), not an
+  // iterable — the rows live on `.rows`.
+  return result.rows as Job[];
 }
 
 async function succeed(id: string) {
